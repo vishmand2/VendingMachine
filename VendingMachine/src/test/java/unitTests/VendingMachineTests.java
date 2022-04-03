@@ -2,6 +2,7 @@ package unitTests;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,7 +31,16 @@ public class VendingMachineTests {
 		moneyManagementObj = new MoneyManagement();
 	}
 	
-	@Test
+	
+	@Test@After
+	public void tearDown() {
+		machineUtilsObj = null;
+		calculateAmountObj = null;
+		stockManagementObj = null;
+		moneyManagementObj = null;
+	}
+	
+	
 	public void testDisplayEnterMoneyMessage() {
 		MachineUtils.selectedProductId = 1;
 		machineUtilsObj.displayEnterMoneyMessage();
