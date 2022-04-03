@@ -32,7 +32,7 @@ public class VendingMachineTests {
 	}
 	
 	
-	@Test@After
+	@After
 	public void tearDown() {
 		machineUtilsObj = null;
 		calculateAmountObj = null;
@@ -41,12 +41,19 @@ public class VendingMachineTests {
 	}
 	
 	
+	/*
+	 * Verify enter money message presented to user 
+	 */
+	@Test
 	public void testDisplayEnterMoneyMessage() {
 		MachineUtils.selectedProductId = 1;
 		machineUtilsObj.displayEnterMoneyMessage();
 		assertEquals("Please enter the money to complete your purchase or press 0 to Exit: ", machineUtilsObj.message);
 	}
 	
+	/*
+	 * performMoneyManagement() Method should return false if change amount is negative number
+	 */
 	@Test
 	public void testPerformMoneyManagementForFalseResponse() {
 		MachineUtils.changeAmount = -1;
@@ -55,6 +62,9 @@ public class VendingMachineTests {
 		assertEquals(false, status);
 	}
 	
+	/* 
+	 * performMoneyManagement() Method should return true if change amount is zero
+	 */
 	@Test
 	public void testPerformMoneyManagementForTrueResponse() {
 		MachineUtils.changeAmount = 0;
@@ -63,23 +73,38 @@ public class VendingMachineTests {
 		assertEquals(true, status);
 	}
 
+	/*
+	 * checkForAllowedCoins() method should return false if entered money is not
+	 * available in Money Enum.
+	 */
 	@Test
 	public void testCheckForAllowedCoinsForTrueResponse() {
 		assertEquals(false, machineUtilsObj.checkForAllowedCoins(3));
 	}
 	
+	/*
+	 * checkForAllowedCoins() method should return true if entered money is 
+	 * available in Money Enum.
+	 */
 	@Test
 	public void testCheckForAllowedCoinsForFalseResponse() {
 		assertEquals(true, machineUtilsObj.checkForAllowedCoins(5));
 	}
 	
-	
+	/*
+	 * validateProductSelection() should return zero if user select Exit
+	 * option from product selection menu
+	 */
 	@Test
 	public void testValidateProductSelectionForResponseZero() {
 		int value = machineUtilsObj.validateProductSelection(0);
 		assertEquals(0, value);
 	}
 	
+	/*
+	 * validateProductSelection() should return one if user select a valid product
+	 * option from product selection menu
+	 */
 	@Test
 	public void testValidateProductSelectionForResponseOne() {
 		MachineUtils.numberOfProduct = 3;
@@ -87,18 +112,29 @@ public class VendingMachineTests {
 		assertEquals(1, value);
 	}
 	
+	/*
+	 * validateProductSelection() should return -1 if user enter invalid product 
+	 * option from product selection menu
+	 */
 	@Test
 	public void testValidateProductSelectionForResponseNegativeOne() {
 		int value = machineUtilsObj.validateProductSelection(9);
 		assertEquals(-1, value);
 	}
 	
+	/*
+	 * validateProductSelection() should return -2 if Admin select Reset option
+	 * option from product selection menu
+	 */
 	@Test
 	public void testValidateProductSelectionForResponseNegativeTwo() {
 		int value = machineUtilsObj.validateProductSelection(Constants.RESET_CODE);
 		assertEquals(-2, value);
 	}
 	
+	/*
+	 * resetLocalVariables() method should set the variables to the default values
+	 */
 	@Test
 	public void testResetLocalVariables() {
 		
@@ -112,6 +148,9 @@ public class VendingMachineTests {
 	}
 	
 	
+	/*
+	 * Test method able to retrieve Money values from Enum.
+	 */
 	@Test
 	public void testGetMoneyValue() {
 
@@ -130,12 +169,19 @@ public class VendingMachineTests {
 	
 	//CalculateAmount.java tests
 	
+	/*
+	 * calculateTotalAmount() method should return the given product price. 
+	 */
 	@Test
 	public void testCalculateTotalAmount() {
 		int price = calculateAmountObj.calculateTotalAmount(Products.SODA);
 		assertEquals(45, price);
 	}
 	
+	/*
+	 * calculateChangeAmount(productPrice, EneterdAmount) should return the difference of the Amount
+	 * i.e. EnteredAmount - productPrice
+	 */
 	@Test
 	public void testCalculateChangeAmountWhenProductPriceGreaterThanZero() {
 		
@@ -144,6 +190,10 @@ public class VendingMachineTests {
 		
 	}
 	
+	/*
+	 * calculateChangeAmount(productPrice, EneterdAmount) should return EneterdAmount back if 
+	 * product amount is 0.
+	 */
 	@Test
 	public void testCalculateChangeAmountWhenProductPriceIsZero() {
 		
@@ -152,6 +202,9 @@ public class VendingMachineTests {
 	
 	}
 	
+	/*
+	 * calculateChangeAmount(productPrice, EneterdAmount) should return 0 if product amount is invalid number
+	 */
 	@Test
 	public void testCalculateChangeAmountWhenProductPriceIsNegative() {
 		
@@ -162,6 +215,11 @@ public class VendingMachineTests {
 	
 	//StockManagement.java tests
 	
+	
+	/*
+	 * resetDefaultStockForItems() method should reset the stock value in stock hashmap 
+	 * according to the global constant value 
+	 */
 	@Test
 	public void testResetDefaultStockForItems() {
 		stockManagementObj.resetDefaultStockForItems();
@@ -169,7 +227,9 @@ public class VendingMachineTests {
 		assertEquals(Constants.MIN_QUANTITY_OF_ITEM, stock);
 	}
 	
-	
+	/*
+	 * addStockBackForItem() method update the stock back for given product
+	 */
 	@Test
 	public void testAddStockBackForItem() {
 		
@@ -179,6 +239,9 @@ public class VendingMachineTests {
 		assertEquals(2, stockValue);
 	}
 	
+	/*
+	 * reduceStockForItem() method should reduce the given product stock by 1.
+	 */
 	@Test
 	public void testReduceStockForItem() {
 		
@@ -188,6 +251,10 @@ public class VendingMachineTests {
 		assertEquals(1, stockValue);
 	}
 	
+	/*
+	 * checkStockForItem() method should return true if the stock is greater than 0 for 
+	 * given product.
+	 */
 	@Test
 	public void testCheckStockForItemForTrueResponse() {
 		StockManagement.stockMap.put(Products.COKE.name(), 1);		
@@ -195,6 +262,10 @@ public class VendingMachineTests {
 		assertEquals(true, status);
 	}
 	
+	/*
+	 * checkStockForItem() method should return false if the stock is less than or equal
+	 * to 0 for given product.
+	 */
 	@Test
 	public void testCheckStockForItemForFalseResponse() {
 		StockManagement.stockMap.put(Products.COKE.name(), 0);
@@ -204,6 +275,10 @@ public class VendingMachineTests {
 
 	//MoneyManagement.java tests
 	
+	/*
+	 * resetMoneyInTheMachine() method should reset the coins value according to
+	 * the global constant value.
+	 */
 	@Test
 	public void testResetMoneyInTheMachine() {
 		
@@ -222,6 +297,9 @@ public class VendingMachineTests {
 		assertEquals(Constants.MIN_QUANTITY_OF_COINS , moneyCount);
 	}
 	
+	/*
+	 * resetMoneyToLocalMap() method should reset the coins values to 0.
+	 */
 	@Test
 	public void testResetMoneyToLocalMap() {
 		
@@ -240,6 +318,11 @@ public class VendingMachineTests {
 		assertEquals(0, moneyCount);		
 	}
 	
+	
+	/*
+	 * addMoneyToLocalMap() method should update the local money hashmap value 
+	 * for given money enum object.
+	 */
 	@Test
 	public void testAddMoneyToLocalMap() {
 		
@@ -249,6 +332,10 @@ public class VendingMachineTests {
 		
 	}
 	
+	/*
+	 * addMoneyToGlobalMap() should update the values of global money hashmap from
+	 * local money hashmap.
+	 */
 	@Test
 	public void testAddMoneyToGlobalMap() {
 		
@@ -264,6 +351,10 @@ public class VendingMachineTests {
 		assertEquals(localMapPennyCount + Constants.MIN_QUANTITY_OF_COINS, globalMapPennyCount);
 	}
 	
+	/*
+	 * deductMoneyFromGlobalMap() should update the values of global money hashmap for
+	 * given Money object.
+	 */
 	@Test
 	public void testDeductMoneyFromGlobalMap() {
 		
@@ -275,6 +366,10 @@ public class VendingMachineTests {
 		assertEquals(Constants.MIN_QUANTITY_OF_COINS - 1, dimeCount);
 	}
 	
+	/*
+	 * checkForChangeAvailable() should return true if value for given money object is
+	 * greater than 0 in global money hashmap.
+	 */
 	@Test
 	public void testCheckForChangeAvailableForTrueResponse() {
 		
@@ -284,6 +379,10 @@ public class VendingMachineTests {
 		
 	}
 	
+	/*
+	 * checkForChangeAvailable() should return false if value for given money object is
+	 * less than or equal 0 in global money hashmap.
+	 */
 	@Test
 	public void testCheckForChangeAvailableForFalseResponse() {
 		
@@ -294,6 +393,10 @@ public class VendingMachineTests {
 		
 	}
 	
+	/*
+	 * adjustGlobalMapWhenRefundingMoney() method should return true if changeAmount
+	 * is zero.
+	 */
 	@Test
 	public void testAdjustGlobalMapWhenRefundingMoneyForZeroChangeAmount() {
 		
@@ -301,6 +404,10 @@ public class VendingMachineTests {
 		assertEquals(true, status);
 	}
 	
+	/*
+	 * adjustGlobalMapWhenRefundingMoney() method should return true if changeAmount
+	 * is successfully updated in global money hashmap.
+	 */
 	@Test
 	public void testAdjustGlobalMapWhenRefundingMoneyWhenChangeAvailable() {
 		
@@ -309,6 +416,10 @@ public class VendingMachineTests {
 		assertEquals(true, status);
 	}
 	
+	/*
+	 * adjustGlobalMapWhenRefundingMoney() method should return false if changeAmount
+	 * is not successfully updated in global money hashmap.
+	 */
 	@Test
 	public void testAdjustGlobalMapWhenRefundingMoneyWhenChangeNotAvailable() {
 		

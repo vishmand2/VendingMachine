@@ -70,7 +70,6 @@ public class MoneyManagement {
 	/**
 	 * 
 	 * @param changeAmount
-	 * @param money object
 	 * @return true if we able to adjust the change Amount else
 	 * 			it will return false
 	 */
